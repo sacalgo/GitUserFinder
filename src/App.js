@@ -1,17 +1,20 @@
+/* eslint-disable no-unused-vars */
 import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./component/layout/navbar";
 import Users from "./component/users/Users";
+import User from "./component/users/User";
 import axios from "axios";
-import { Search } from "./component/users/Search"
-
+import { Search } from "./component/users/Search";
 import Alert from "./component/layout/Alert";
-import  About from './component/layout/About';
+import About from "./component/layout/About";
 
 class App extends Component {
   state = {
     users: [],
+    user: {},
+    repos:[],
     loading: false,
     alert: null,
   };
@@ -35,6 +38,24 @@ class App extends Component {
 
     this.setState({ users: res.data.items, loading: false });
   };
+  //Get Single Github userr
+  getUser = async (username) => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${username}?&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+
+    this.setState({ user: res.data, loading: false });
+  };
+  //GEt users repos
+  getUserRepos = async (username) => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+
+    this.setState({ repos: res.data, loading: false });
+  };
   //clear users from state
   clearUsers = () => this.setState({ users: [], loading: false });
 
@@ -46,7 +67,7 @@ class App extends Component {
     }, 3000);
   };
   render() {
-    const { users, loading } = this.state;
+    const { users, user,repos, loading } = this.state;
     return (
       <Router>
         <React.Fragment>
@@ -69,7 +90,21 @@ class App extends Component {
                   </Fragment>
                 )}
               ></Route>
-              <Route exact path='/about' component={About}></Route>
+              <Route exact path="/about" component={About}></Route>
+              <Route
+                exact
+                path="/user/:login"
+                render={(props) => (
+                  <User
+                    {...props}
+                    getUser={this.getUser}
+                    getUserRepos={this.getUserRepos}
+                    user={user}
+                    repos={repos}
+                    loading={loading}
+                  ></User>
+                )}
+              ></Route>
             </Switch>
           </div>
         </React.Fragment>
