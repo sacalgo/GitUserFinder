@@ -6,7 +6,7 @@ import Navbar from "./component/layout/navbar";
 import Users from "./component/users/Users";
 import User from "./component/users/User";
 import axios from "axios";
-import { Search } from "./component/users/Search";
+import  Search  from "./component/users/Search";
 import Alert from "./component/layout/Alert";
 import About from "./component/layout/About";
 
