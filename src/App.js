@@ -1,11 +1,13 @@
-import React, { Component } from "react";
-
+import React, { Component, Fragment } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./component/layout/navbar";
 import Users from "./component/users/Users";
 import axios from "axios";
-import { Search } from "./component/users/Search";
-import Alert  from './component/layout/Alert';
+import { Search } from "./component/users/Search"
+
+import Alert from "./component/layout/Alert";
+import  About from './component/layout/About';
 
 class App extends Component {
   state = {
@@ -40,25 +42,38 @@ class App extends Component {
   setAlert = (msg, type) => {
     this.setState({ alert: { msg: msg, type: type } });
     setTimeout(() => {
-       this.setState({alert:null})
+      this.setState({ alert: null });
     }, 3000);
   };
   render() {
     const { users, loading } = this.state;
     return (
-      <React.Fragment>
-        <Navbar></Navbar>
-        <div className="container">
-          <Alert alert={this.state.alert}></Alert>
-          <Search
-            searchUsers={this.searchUsers}
-            clearUsers={this.clearUsers}
-            showClear={this.state.users.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          ></Search>
-          <Users loading={loading} users={users}></Users>
-        </div>
-      </React.Fragment>
+      <Router>
+        <React.Fragment>
+          <Navbar></Navbar>
+          <div className="container">
+            <Alert alert={this.state.alert}></Alert>
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Fragment>
+                    <Search
+                      searchUsers={this.searchUsers}
+                      clearUsers={this.clearUsers}
+                      showClear={this.state.users.length > 0 ? true : false}
+                      setAlert={this.setAlert}
+                    ></Search>
+                    <Users loading={loading} users={users}></Users>
+                  </Fragment>
+                )}
+              ></Route>
+              <Route exact path='/about' component={About}></Route>
+            </Switch>
+          </div>
+        </React.Fragment>
+      </Router>
     );
   }
 }
