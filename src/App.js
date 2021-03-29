@@ -11,6 +11,7 @@ import Alert from "./component/layout/Alert";
 import About from "./component/layout/About";
 
 const App = () => {
+
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState([{}]);
   const [repos, setRepos] = useState([]);
@@ -20,13 +21,13 @@ const App = () => {
   // state={
   //   users:[],
   //   user:{},
-  //   repos:[],
+  //   repos:[], 
   //   loading:false,
   //   alert:null
   // };
-
+    
   //search Github users
-  const searchUsers = async (text) => {
+ const searchUsers = async (text) => {
     setLoading(true);
     const res = await axios.get(
       `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
@@ -36,7 +37,7 @@ const App = () => {
     setLoading(false);
   };
   //Get Single Github userr
-  const getUser = async (username) => {
+ const getUser = async (username) => {
     setLoading(true);
     const res = await axios.get(
       `https://api.github.com/users/${username}?&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
@@ -45,8 +46,9 @@ const App = () => {
     setLoading(false);
   };
   //GEt users repos
-  const getUserRepos = async (username) => {
-    setLoading(true);
+ const getUserRepos = async (username) => {
+   
+     setLoading(true);
     const res = await axios.get(
       `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     );
@@ -54,19 +56,22 @@ const App = () => {
     setLoading(false);
   };
   //clear users from state
-  const clearUsers = () => {
+ const clearUsers = () => {
+  
     setUsers([]);
     setLoading(false);
-  };
+  }
 
   //Set Alert
-  const showAlert = (msg, type) => {
-    setAlert({ msg: msg, type: type });
+ const showAlert = (msg, type) => {
+  
+    setAlert({ msg: msg, type: type })
     setTimeout(() => {
-      setAlert(null);
+       setAlert(null);
     }, 3000);
   };
 
+ 
   return (
     <Router>
       <React.Fragment>
