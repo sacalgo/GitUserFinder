@@ -3,16 +3,15 @@ import React, { Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./component/layout/navbar";
-import Users from "./component/users/Users";
 import User from "./component/users/User";
-import Search from "./component/users/Search";
+import Home from "./component/pages/Home";
+import NotFound from "./component/pages/NotFound";
 import Alert from "./component/layout/Alert";
-import About from "./component/layout/About";
+import About from "./component/pages/About";
 import GithubState from "./context/github/githubState";
-import AlertState from './context/alert/AlertState';
+import AlertState from "./context/alert/AlertState";
 
 const App = () => {
- 
   return (
     <GithubState>
       <AlertState>
@@ -20,22 +19,12 @@ const App = () => {
           <React.Fragment>
             <Navbar></Navbar>
             <div className="container">
-              <Alert ></Alert>
+              <Alert></Alert>
               <Switch>
-                <Route
-                  exact
-                  path="/"
-                  render={(props) => (
-                    <Fragment>
-                      <Search
-                        
-                      ></Search>
-                      <Users></Users>
-                    </Fragment>
-                  )}
-                ></Route>
-                <Route exact path="/about" component={About}></Route>
-                <Route exact path="/user/:login" component={User}></Route>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/user/:login" component={User} />
+                <Route component={NotFound}/>
               </Switch>
             </div>
           </React.Fragment>
